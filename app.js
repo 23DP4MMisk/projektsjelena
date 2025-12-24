@@ -4,6 +4,12 @@ const app = express();
 
 app.use(express.json());
 
+const authRoutes = require('./routes/auth');
+const bookRoutes = require('./routes/books');
+
+app.use('/auth', authRoutes);
+app.use('/books', bookRoutes);
+
 app.get('/', (req, res) => {
   res.send('Online biblioteka backend darbojas');
 });
@@ -11,16 +17,4 @@ app.get('/', (req, res) => {
 const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Serveris palaists uz porta ${PORT}`);
-});
-
-const db = require('./db');
-
-app.get('/books', (req, res) => {
-  db.query('SELECT * FROM books', (err, results) => {
-    if (err) {
-      res.status(500).json(err);
-    } else {
-      res.json(results);
-    }
-  });
 });
